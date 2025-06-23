@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoningAccelerator", "ZoningAccelerator.csproj", "{6C5724E9-B4C5-41B2-9A5E-EB1C70BA60C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C5724E9-B4C5-41B2-9A5E-EB1C70BA60C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C5724E9-B4C5-41B2-9A5E-EB1C70BA60C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C5724E9-B4C5-41B2-9A5E-EB1C70BA60C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C5724E9-B4C5-41B2-9A5E-EB1C70BA60C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98BB4C9E-5D11-40DE-A21C-1D05C11A9FAF}
+	EndGlobalSection
+EndGlobal
