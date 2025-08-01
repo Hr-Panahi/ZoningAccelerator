@@ -28,13 +28,14 @@ When launched, you'll see a menu like this:
 ========== ZONING ACCELERATOR ==========
 
 Select an option:
-  1. Compare Dwelling Types
-  2. Compare Ancillary Types
-  3. Compare Permitted Uses
-  4. Run All Comparisons
-  5. Get Unique Dwellings
-  6. Get Unique Ancillaries
-  7. Get Unique Permitted Uses
+  1. Compare DwellingTypes
+  2. Compare AncillaryTypes
+  3. Compare PermittedUses
+  4. Compare TypeOfUses
+  5. Run All Comparisons
+  6. Get Unique Dwellings
+  7. Get Unique Ancillaries
+  8. Get Unique Permitted Uses
   q. Quit
 
 Choice:
