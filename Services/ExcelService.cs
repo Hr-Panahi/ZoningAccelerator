@@ -48,5 +48,10 @@ namespace ZoningAccelerator.Services
         {
             return GetCodesFromSheet(filePath, sheetName, columnName, code => new PermittedUses { PermittedUse = code });
         }
+
+        public List<TypeOfUses> GetTypeOfUseCodesFromSheet(string filePath, string sheetName, string columnName)
+        {
+            return GetCodesFromSheet(filePath, sheetName, columnName, code => new TypeOfUses { TypeOfUse = code });
+        }
     }
 }

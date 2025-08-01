@@ -44,15 +44,18 @@ namespace ZoningAccelerator
                             RunPermittedUseComparison();
                             break;
                         case "4":
-                            RunAllComparisons();
+                            RunTypeOfUseComparison();
                             break;
                         case "5":
-                            GetUniqueDwellings();
+                            RunAllComparisons();
                             break;
                         case "6":
-                            GetUniqueAncillaries();
+                            GetUniqueDwellings();
                             break;
                         case "7":
+                            GetUniqueAncillaries();
+                            break;
+                        case "8":
                             GetUniquePermittedUses();
                             break;
                         default:
@@ -84,10 +87,11 @@ namespace ZoningAccelerator
             Console.WriteLine("========== ZONING ACCELERATOR ==========\n");
 
             string[] leftOptions = {
-        "1. Compare Dwelling Types",
-        "2. Compare Ancillary Types",
-        "3. Compare Permitted Uses",
-        "4. Run All Comparisons"
+        "1. Compare DwellingTypes",
+        "2. Compare AncillaryTypes",
+        "3. Compare PermittedUses",
+        "4. Compare TypeOfUses",
+        "5. Run All Comparisons"
     };
 
             string[] rightOptions = {
@@ -182,6 +186,18 @@ namespace ZoningAccelerator
             ShowSuccess("Permitted use comparison complete.");
         }
 
+        static void RunTypeOfUseComparison()
+        {
+            var masterPath = ReadInput("Enter path to 'Zoning Master Data' excel: ");
+            var cityPath = ReadInput("Enter path to Regulation excel: ");
+            const string citySheet = "Zone Permitted Uses";
+
+            var comparer = new TypeOfUseComparison();
+            comparer.Execute(masterPath, cityPath, citySheet);
+
+            ShowSuccess("TypeOfUse comparison complete.");
+        }
+
         static void RunAllComparisons()
         {
             var masterPath = ReadInput("Enter path to Master Excel (Zoning Master Data): ");
@@ -190,7 +206,7 @@ namespace ZoningAccelerator
 
             Console.WriteLine("\nComparing data...");
 
-            // Dwelling Types
+            // DwellingTypes
             var masterDwelling = excelService.GetDwellingCodesFromSheet(masterPath, "MD - Dwelling Types", "Code")
                                              .Select(c => c.DwellingType).ToHashSet();
 
@@ -198,15 +214,21 @@ namespace ZoningAccelerator
                                            .Select(c => c.DwellingType).ToList();
             var newDwelling = cityDwelling.Where(c => !masterDwelling.Contains(c)).Distinct().ToList();
 
-            // Ancillary Types
+            // AncillaryTypes
             var masterAncillary = excelService.GetAncillaryCodesFromSheet(masterPath, "MD - Ancillary Types", "Code")
                                               .Select(c => c.AncillaryType).ToHashSet();
 
             var cityAncillary = excelService.GetAncillaryCodesFromSheet(cityPath, "Zone Allowed AncillaryTypes", "AncillaryType")
                                             .Select(c => c.AncillaryType).ToList();
             var newAncillary = cityAncillary.Where(c => !masterAncillary.Contains(c)).Distinct().ToList();
+            // TypeOfUses
+            var masterTypeOfUse = excelService.GetTypeOfUseCodesFromSheet(masterPath, "MD - Ancillary Types", "Code")
+                                              .Select(c => c.TypeOfUse).ToHashSet();
+            var cityTypeOfUse = excelService.GetTypeOfUseCodesFromSheet(cityPath, "Zone Allowed AncillaryTypes", "AncillaryType")
+                                            .Select(c => c.TypeOfUse).ToList();
+            var newTypeOfUse = cityTypeOfUse.Where(c => !masterTypeOfUse.Contains(c)).Distinct().ToList();
 
-            // Permitted Uses
+            // PermittedUses
             var masterPermitted = excelService.GetPermittedUseCodesFromSheet(cityPath, "MD - Permitted Uses", "Code")
                                               .Select(p => p.PermittedUse).ToHashSet();
 
@@ -302,6 +324,7 @@ namespace ZoningAccelerator
                 ShowError(ex.Message);
             }
         }
+
 
         // Unified method for generating safe unique file paths
         static string GetUniqueFilePath(string prefix, string cityPath, string extension)
