@@ -71,6 +71,6 @@ No installation required — this is a **self-contained executable**. The tool w
 
 ## 💬 Questions?
 
-If you run into issues or have suggestions, you know who to cotact!
+If you run into issues or have suggestions, you know who to contact!
 
 ---
