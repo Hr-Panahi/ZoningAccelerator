@@ -24,7 +24,7 @@ namespace ZoningAccelerator.Services
 
             foreach (var row in worksheet.RowsUsed().Skip(1))
             {
-                var cellValue = row.Cell(column.Address.ColumnNumber).GetString().Trim();
+                var cellValue = row.Cell(column.Address.ColumnNumber).GetString();
                 if (!string.IsNullOrEmpty(cellValue))
                 {
                     result.Add(mapFunc(cellValue));
