@@ -95,9 +95,9 @@ namespace ZoningAccelerator
     };
 
             string[] rightOptions = {
-        "5. Get Unique Dwellings",
-        "6. Get Unique Ancillaries",
-        "7. Get Unique Permitted Uses"
+        "6. Get Unique Dwellings",
+        "7. Get Unique Ancillaries",
+        "8. Get Unique Permitted Uses"
     };
 
             int leftColumnWidth = 25;          // tighter left column width
@@ -153,13 +153,13 @@ namespace ZoningAccelerator
         static void RunDwellingTypeComparison()
         {
             var masterPath = ReadInput("Enter path to Master Excel (Zoning Master Data): ");
-            var cityPath = ReadInput("Enter path to City Excel: ");
+            var cityPath = ReadInput("Enter path to City Excel (Zoning Regulation): ");
             const string citySheet = "Zone Allowed DwellingTypes";
 
             var comparer = new DwellingTypeComparison();
             comparer.Execute(masterPath, cityPath, citySheet);
 
-            ShowSuccess("Dwelling type comparison complete.");
+            ShowSuccess("DwellingTypes comparison complete.");
         }
 
         static void RunAncillaryTypeComparison()
@@ -171,7 +171,7 @@ namespace ZoningAccelerator
             var comparer = new AncillaryTypeComparison();
             comparer.Execute(masterPath, cityPath, citySheet);
 
-            ShowSuccess("Ancillary type comparison complete.");
+            ShowSuccess("AncillaryTypes comparison complete.");
         }
 
         static void RunPermittedUseComparison()
@@ -183,7 +183,7 @@ namespace ZoningAccelerator
                              "Zone Permitted Uses", "Permitted Use",
                              "MD - Permitted Uses", "Code");
 
-            ShowSuccess("Permitted use comparison complete.");
+            ShowSuccess("PermittedUses comparison complete.");
         }
 
         static void RunTypeOfUseComparison()
@@ -195,13 +195,13 @@ namespace ZoningAccelerator
             var comparer = new TypeOfUseComparison();
             comparer.Execute(masterPath, cityPath, citySheet);
 
-            ShowSuccess("TypeOfUse comparison complete.");
+            ShowSuccess("TypeOfUses comparison complete.");
         }
 
         static void RunAllComparisons()
         {
             var masterPath = ReadInput("Enter path to Master Excel (Zoning Master Data): ");
-            var cityPath = ReadInput("Enter path to City Excel (for Dwelling/Ancillary): ");
+            var cityPath = ReadInput("Enter path to City Excel (Zoning Regulation): ");
             var excelService = new ExcelService();
 
             Console.WriteLine("\nComparing data...");
@@ -245,7 +245,7 @@ namespace ZoningAccelerator
 
         static void GetUniqueDwellings()
         {
-            var cityPath = ReadInput("Enter path to City Excel: ");
+            var cityPath = ReadInput("Enter path to City Excel (Zoning Regulation): ");
             var sheetName = "Zone Allowed DwellingTypes";
             var columnName = "DwellingType";
 
@@ -262,7 +262,7 @@ namespace ZoningAccelerator
                 var outputFileName = GetUniqueFilePath("UniqueDwellings", cityPath, ".txt");
                 File.WriteAllLines(outputFileName, dwellings);
 
-                ShowSuccess($"Unique dwelling types saved to:\n{outputFileName}");
+                ShowSuccess($"New Unique DwellingTypess saved to:\n{outputFileName}");
             }
             catch (Exception ex)
             {
@@ -272,7 +272,7 @@ namespace ZoningAccelerator
 
         static void GetUniqueAncillaries()
         {
-            var cityPath = ReadInput("Enter path to City Excel: ");
+            var cityPath = ReadInput("Enter path to City Excel (Zoning Regulation): ");
             var sheetName = "Zone Allowed AncillaryTypes";
             var columnName = "AncillaryType";
 
@@ -289,7 +289,7 @@ namespace ZoningAccelerator
                 var outputFileName = GetUniqueFilePath("UniqueAncillaries", cityPath, ".txt");
                 File.WriteAllLines(outputFileName, ancillaries);
 
-                ShowSuccess($"Unique ancillary types saved to:\n{outputFileName}");
+                ShowSuccess($"New Unique AncillaryTypes saved to:\n{outputFileName}");
             }
             catch (Exception ex)
             {
@@ -299,7 +299,7 @@ namespace ZoningAccelerator
 
         static void GetUniquePermittedUses()
         {
-            var cityPath = ReadInput("Enter path to City Excel: ");
+            var cityPath = ReadInput("Enter path to City Excel (Zoning Regulation): ");
             var sheetName = "Zone Permitted Uses";
             var columnName = "Permitted Use";
 
@@ -317,7 +317,7 @@ namespace ZoningAccelerator
                 var outputFileName = GetUniqueFilePath("UniquePermittedUses", cityPath, ".txt");
                 File.WriteAllLines(outputFileName, permittedUses);
 
-                ShowSuccess($"Unique permitted uses saved to:\n{outputFileName}");
+                ShowSuccess($"New Unique PermittedUses saved to:\n{outputFileName}");
             }
             catch (Exception ex)
             {
