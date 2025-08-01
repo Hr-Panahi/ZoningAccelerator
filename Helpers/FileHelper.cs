@@ -38,5 +38,19 @@ namespace ZoningAccelerator.Helpers
             workbook.SaveAs(filePath);
         }
 
+        public static void WriteToFileWithAutoName(List<string> lines, string prefix, string cityPath)
+        {
+            var path = PathHelper.GetUniqueFilePath(prefix, cityPath, ".txt");
+            WriteToFile(lines, path);
+        }
+
+        public static void WriteToExcelWithAutoName(
+            List<string> col1, List<string> col2, List<string> col3, List<string> col4,
+            string prefix, string cityPath)
+        {
+            var path = PathHelper.GetUniqueFilePath(prefix, cityPath, ".xlsx");
+            WriteToExcel(path, col1, col2, col3, col4);
+        }
+
     }
 }

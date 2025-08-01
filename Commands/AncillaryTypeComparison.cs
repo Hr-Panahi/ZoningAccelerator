@@ -28,7 +28,7 @@ namespace ZoningAccelerator.Commands
 
             if(newAncillaries.Any())
             {
-                var outputPath = Path.Combine(Environment.CurrentDirectory, "UniqueAncillaryTypes.txt");
+                var outputPath = PathHelper.GetUniqueFilePath("UniqueAncillaryTypes", cityFile, ".txt");
                 FileHelper.WriteToFile(newAncillaries, outputPath);
                 Console.WriteLine($"Found {newAncillaries.Count} new ancillary types. Details written to {outputPath}.");
             }

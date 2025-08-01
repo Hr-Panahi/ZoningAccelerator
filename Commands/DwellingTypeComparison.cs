@@ -28,7 +28,7 @@ namespace ZoningAccelerator.Commands
 
             if (newDwellings.Any())
             {
-                var outputPath = Path.Combine(Environment.CurrentDirectory, "UniqueDwellingTypes.txt");
+                var outputPath = PathHelper.GetUniqueFilePath("UniqueDwellingTypes", cityFile, ".txt");
                 FileHelper.WriteToFile(newDwellings, outputPath);
                 Console.WriteLine($"Found {newDwellings.Count} new dwelling types. Details written to {outputPath}.");
             }

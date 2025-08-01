@@ -28,7 +28,7 @@ namespace ZoningAccelerator.Commands
 
             if (newPermittedUses.Any())
             {
-                var outputPath = Path.Combine(Environment.CurrentDirectory, "UniquePermittedUses.txt");
+                var outputPath = PathHelper.GetUniqueFilePath( "UniquePermittedUses", filePath, ".txt");
                 FileHelper.WriteToFile(newPermittedUses, outputPath);
                 Console.WriteLine($"Found {newPermittedUses.Count} new permitted uses. Details written to {outputPath}.");
             }

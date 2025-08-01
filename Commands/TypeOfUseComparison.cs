@@ -28,7 +28,7 @@ namespace ZoningAccelerator.Commands
 
             if (newTypeOfUses.Any())
             {
-                var outputPath = Path.Combine(Environment.CurrentDirectory, "UniqueTypeOfUses.txt");
+                var outputPath = PathHelper.GetUniqueFilePath("UniqueTypeOfUses", cityFile, ".txt");
                 FileHelper.WriteToFile(newTypeOfUses, outputPath);
                 Console.WriteLine($"Found {newTypeOfUses.Count} new TypeOfUses. Details written to {outputPath}.");
             }
