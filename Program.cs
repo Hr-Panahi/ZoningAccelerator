@@ -222,9 +222,9 @@ namespace ZoningAccelerator
                                             .Select(c => c.AncillaryType).ToList();
             var newAncillary = cityAncillary.Where(c => !masterAncillary.Contains(c)).Distinct().ToList();
             // TypeOfUses
-            var masterTypeOfUse = excelService.GetTypeOfUseCodesFromSheet(masterPath, "MD - Ancillary Types", "Code")
+            var masterTypeOfUse = excelService.GetTypeOfUseCodesFromSheet(masterPath, "MD - Type Of Use", "Code")
                                               .Select(c => c.TypeOfUse).ToHashSet();
-            var cityTypeOfUse = excelService.GetTypeOfUseCodesFromSheet(cityPath, "Zone Allowed AncillaryTypes", "AncillaryType")
+            var cityTypeOfUse = excelService.GetTypeOfUseCodesFromSheet(cityPath, "Zone Permitted Uses", "TypeOfUse")
                                             .Select(c => c.TypeOfUse).ToList();
             var newTypeOfUse = cityTypeOfUse.Where(c => !masterTypeOfUse.Contains(c)).Distinct().ToList();
 
@@ -238,7 +238,7 @@ namespace ZoningAccelerator
 
             // Write to Excel
             var outputPath = GetUniqueFilePath("AllComparisonResults", cityPath, ".xlsx");
-            FileHelper.WriteToExcel(outputPath, newDwelling, newAncillary, newPermitted);
+            FileHelper.WriteToExcel(outputPath, newDwelling, newAncillary, newPermitted, newTypeOfUse);
 
             ShowSuccess($"All comparisons complete.\n📁 Results saved to: {outputPath}");
         }
