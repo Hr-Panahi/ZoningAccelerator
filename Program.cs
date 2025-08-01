@@ -58,6 +58,9 @@ namespace ZoningAccelerator
                         case "8":
                             GetUniquePermittedUses();
                             break;
+                        case "9":
+                            GetUniqueTypeOfUses();
+                            break;
                         default:
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Invalid choice. Please try again.");
@@ -97,7 +100,8 @@ namespace ZoningAccelerator
             string[] rightOptions = {
         "6. Get Unique Dwellings",
         "7. Get Unique Ancillaries",
-        "8. Get Unique Permitted Uses"
+        "8. Get Unique Permitted Uses",
+        "9. Get Unique Type Of Uses"
     };
 
             int leftColumnWidth = 25;          // tighter left column width
@@ -174,18 +178,6 @@ namespace ZoningAccelerator
             ShowSuccess("AncillaryTypes comparison complete.");
         }
 
-        static void RunPermittedUseComparison()
-        {
-            var filePath = ReadInput("Enter path to Excel file containing both sheets: ");
-
-            var comparer = new PermittedUseComparison();
-            comparer.Execute(filePath,
-                             "Zone Permitted Uses", "Permitted Use",
-                             "MD - Permitted Uses", "Code");
-
-            ShowSuccess("PermittedUses comparison complete.");
-        }
-
         static void RunTypeOfUseComparison()
         {
             var masterPath = ReadInput("Enter path to 'Zoning Master Data' excel: ");
@@ -196,6 +188,18 @@ namespace ZoningAccelerator
             comparer.Execute(masterPath, cityPath, citySheet);
 
             ShowSuccess("TypeOfUses comparison complete.");
+        }
+
+        static void RunPermittedUseComparison()
+        {
+            var filePath = ReadInput("Enter path to Excel file containing both sheets: ");
+
+            var comparer = new PermittedUseComparison();
+            comparer.Execute(filePath,
+                             "Zone Permitted Uses", "Permitted Use",
+                             "MD - Permitted Uses", "Code");
+
+            ShowSuccess("PermittedUses comparison complete.");
         }
 
         static void RunAllComparisons()
@@ -237,7 +241,7 @@ namespace ZoningAccelerator
             var newPermitted = cityPermitted.Where(p => !masterPermitted.Contains(p)).Distinct().ToList();
 
             // Write to Excel
-            var outputPath = GetUniqueFilePath("AllComparisonResults", cityPath, ".xlsx");
+            var outputPath = PathHelper.GetUniqueFilePath("AllComparisonResults", cityPath, ".xlsx");
             FileHelper.WriteToExcel(outputPath, newDwelling, newAncillary, newPermitted, newTypeOfUse);
 
             ShowSuccess($"All comparisons complete.\n📁 Results saved to: {outputPath}");
@@ -259,10 +263,10 @@ namespace ZoningAccelerator
                                            .OrderBy(d => d)
                                            .ToList();
 
-                var outputFileName = GetUniqueFilePath("UniqueDwellings", cityPath, ".txt");
-                File.WriteAllLines(outputFileName, dwellings);
+                var outputFilePath = PathHelper.GetUniqueFilePath("UniqueDwellings", cityPath, ".txt");
+                FileHelper.WriteToFile(dwellings,outputFilePath);
 
-                ShowSuccess($"New Unique DwellingTypess saved to:\n{outputFileName}");
+                ShowSuccess($"New Unique DwellingTypess saved to:\n{outputFilePath}");
             }
             catch (Exception ex)
             {
@@ -286,10 +290,37 @@ namespace ZoningAccelerator
                                              .OrderBy(a => a)
                                              .ToList();
 
-                var outputFileName = GetUniqueFilePath("UniqueAncillaries", cityPath, ".txt");
-                File.WriteAllLines(outputFileName, ancillaries);
+                var outputFilePath = PathHelper.GetUniqueFilePath("UniqueAncillaries", cityPath, ".txt");
+                FileHelper.WriteToFile(ancillaries, outputFilePath);
 
-                ShowSuccess($"New Unique AncillaryTypes saved to:\n{outputFileName}");
+                ShowSuccess($"New Unique AncillaryTypes saved to:\n{outputFilePath}");
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.Message);
+            }
+        }
+
+        static void GetUniqueTypeOfUses()
+        {
+            var cityPath = ReadInput("Enter path to City Excel (Zoning Regulation): ");
+            var sheetName = "Zone Permitted Uses";
+            var columnName = "TypeOfUse";
+
+            var excelService = new ExcelService();
+
+            try
+            {
+                var typeOfUses = excelService.GetTypeOfUseCodesFromSheet(cityPath, sheetName, columnName)
+                                             .Select(a => a.TypeOfUse.Trim())
+                                             .Distinct()
+                                             .OrderBy(a => a)
+                                             .ToList();
+
+                var outputFilePath = PathHelper.GetUniqueFilePath("UniqueTypeOfUses", cityPath, ".txt");
+                FileHelper.WriteToFile(typeOfUses, outputFilePath);
+
+                ShowSuccess($"New Unique TypeOfUses saved to:\n{outputFilePath}");
             }
             catch (Exception ex)
             {
@@ -314,45 +345,15 @@ namespace ZoningAccelerator
                                                .OrderBy(p => p)
                                                .ToList();
 
-                var outputFileName = GetUniqueFilePath("UniquePermittedUses", cityPath, ".txt");
-                File.WriteAllLines(outputFileName, permittedUses);
+                var outputFilePath = PathHelper.GetUniqueFilePath("UniquePermittedUses", cityPath, ".txt");
+                FileHelper.WriteToFile(permittedUses, outputFilePath);
 
-                ShowSuccess($"New Unique PermittedUses saved to:\n{outputFileName}");
+                ShowSuccess($"New Unique PermittedUses saved to:\n{outputFilePath}");
             }
             catch (Exception ex)
             {
                 ShowError(ex.Message);
             }
-        }
-
-
-        // Unified method for generating safe unique file paths
-        static string GetUniqueFilePath(string prefix, string cityPath, string extension)
-        {
-            // Use the folder of the running executable
-            var exeFolder = AppContext.BaseDirectory;
-
-            var saveDirectory = Path.Combine(exeFolder, "Saved Files");
-
-            if (!Directory.Exists(saveDirectory))
-                Directory.CreateDirectory(saveDirectory);
-
-            var cityFileName = Path.GetFileNameWithoutExtension(cityPath);
-            var safeCityName = string.Concat(cityFileName.Select(c => char.IsLetterOrDigit(c) ? c : '_'));
-
-            var baseName = $"{prefix}_{safeCityName}";
-            var fileName = $"{baseName}{extension}";
-            var fullPath = Path.Combine(saveDirectory, fileName);
-
-            int counter = 1;
-            while (File.Exists(fullPath))
-            {
-                fileName = $"{baseName}_{counter}{extension}";
-                fullPath = Path.Combine(saveDirectory, fileName);
-                counter++;
-            }
-
-            return fullPath;
         }
     }
 }
